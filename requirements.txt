@@ -1,0 +1,15 @@
+Table for transactions:
+1.transaction id
+2.Owner
+3.car name
+4.date from
+4a.time from
+5.date until
+5a.time until
+6.payment
+7.pickuplocation
+8.dropoflocation
+9.user name
+10.last name
+11.phone number
+12.passport number

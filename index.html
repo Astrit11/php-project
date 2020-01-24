@@ -1,0 +1,407 @@
+	<!DOCTYPE html>
+	<html lang="zxx" class="no-js">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<link rel="shortcut icon" href="img/fav.png">
+		<meta name="author" content="codepixer">
+		<meta name="description" content="">
+		<meta name="keywords" content="">
+		<meta charset="UTF-8">
+		<title>Car Rentals</title>
+		<link href="https://fonts.googleapis.com/css?family=Poppins:100,200,400,300,500,600,700" rel="stylesheet">
+		<link rel="stylesheet" href="css/linearicons.css">
+		<link rel="stylesheet" href="css/font-awesome.min.css">
+		<link rel="stylesheet" href="css/bootstrap.css">
+		<link rel="stylesheet" href="css/magnific-popup.css">
+		<link rel="stylesheet" href="css/nice-select.css">
+		<link rel="stylesheet" href="css/animate.min.css">
+		<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+		<link rel="stylesheet" href="css/owl.carousel.css">
+		<link rel="stylesheet" href="css/main.css">
+	</head>
+	<body>
+			<script type="text/javascript">
+				function returnLocation() {
+					var label = document.getElementById('dropOffLocation');
+					var labell=	document.getElementById("dropoffLL");
+					var checkBox = document.getElementById("checkLocation");
+					if (checkBox.checked == true) {
+						var dL = document.forms["searchCar"]["dropOffLocation"].value ="";
+						label.style.display='block';
+						label.style.transition = "display 2s";
+						labell.style.display="block";
+					}
+					else {
+						label.style.display='none';
+						label.style.transition = "display 2s";
+						labell.style.display="none";
+						var pL = document.forms["searchCar"]["pickUpLocation"].value;
+						var dL = document.forms["searchCar"]["dropOffLocation"].value = pL;
+					}
+				}
+				function validateForm() {
+					var pL = document.forms["searchCar"]["pickUpLocation"].value;
+					var pD = new Date(document.forms["searchCar"]["pickUpDate"].value);
+					var pT = document.forms["searchCar"]["pickUpTime"].value;
+					var dlC = document.forms["searchCar"]["differentLocationCheckBox"].checked;
+					var dL = document.forms["searchCar"]["dropOffLocation"].value;
+					var dD = document.forms["searchCar"]["dropOffDate"].value;
+					var dT = document.forms["searchCar"]["dropOffTime"].value;
+					var dA = document.forms["searchCar"]["driverAge"].value;
+					function dateEvaluate(date){
+						date = new Date(date)
+						var date_Y = date.getFullYear();
+						var date_M = date.getMonth()+1;
+						var date_D = date.getDate();
+
+						var today = new Date();
+						var today_Y = today.getFullYear();
+						var today_M = today.getMonth()+1;
+						var today_D = today.getDate();
+						if (today_D >= date_D ) {
+							if (today_M >= date_M) {
+								if (today_Y >= date_Y) {
+									alert("Please pick another date different from today!");
+									return false;
+								}
+							}
+						}
+						if (today_M > date_M && today_Y >= date_Y) {
+							alert("Invalid Date!");
+							return false;
+						}
+						if (today_Y > date_Y || today_Y+2 == date_Y ) {
+							alert("Please pick a date withing one year range!");
+							return false;
+						}
+						else {
+							return true;
+						}
+					}
+					function returnEvaluate(rentday, returnday){
+						returnday = new Date(returnday)
+						var returnday_Y = returnday.getFullYear();
+						var returnday_M = returnday.getMonth()+1;
+						var returnday_D = returnday.getDate();
+						var rentday = new Date(rentday);
+						var rentday_Y = rentday.getFullYear();
+						var rentday_M = rentday.getMonth()+1;
+						var rentday_D = rentday.getDate();
+
+						if (rentday_D == returnday_D ) {
+							if (rentday_M == returnday_M) {
+								if (rentday_Y == returnday_Y) {
+									alert("Daily rent are not allowed!");
+									return false;
+								}
+							}
+						}
+						if (rentday_D >= returnday_D && rentday_M >= returnday_M && rentday_Y >= returnday_Y) {
+							alert("Invalid Return Date!");
+							return false;
+						}
+						if (rentday_M > returnday_M && rentday_Y == returnday_Y) {
+							alert("Invalid Return Month!");
+							return false;
+						}
+						if (rentday_Y > returnday_Y || rentday_Y+2 == returnday_Y ) {
+							alert("Please pick a return year withing one year range!");
+							return false;
+						}
+						else {
+							return true;
+						}
+					}
+					if ( pL == "") {
+						alert("Please Select Pick Up Location!");
+						return false;
+					}
+					if ( dlC) {
+							if (dL == "") {
+								alert("Please Select Pick Up Location!");
+								return false;
+							}
+					}
+					if (dL=="" && !dlC) {
+						var pL = document.forms["searchCar"]["pickUpLocation"].value;
+						var dL = document.forms["searchCar"]["dropOffLocation"].value = pL;
+					}
+					if (!dateEvaluate(pD)) {
+						return false;
+					}
+					if (!returnEvaluate(pD,dD)) {
+						return false;
+					}
+
+					if (dT == "" || pT == "") {
+						alert("Please Enter pick-up or return time!");
+						return false;
+					}
+					var date1 = new Date(pD);
+					var date2 = new Date(dD);
+					var timeDiff = Math.abs(date2.getTime() - date1.getTime());
+					var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+					document.forms["searchCar"]["dateDiff"].value = diffDays;
+
+				}
+			</script>
+			  <header id="header" id="home">
+			    <div class="container">
+			    	<div class="row align-items-center justify-content-between d-flex">
+				      <div id="logo">
+				        <a href="index.html"><img src="img/logo.png" alt="" title="" /></a>
+				      </div>
+				      <nav id="nav-menu-container">
+				        <ul class="nav-menu">
+				          <li class="menu-active"><a href="index.html">Home</a></li>
+				          <li><a href="service.html">Service</a></li>
+				          <li><a href="contact.html">Contact</a></li>
+							<li><a href="login.html">Login</a></li>
+						</ul>
+				      </nav>
+			    	</div>
+			    </div>
+			  </header>
+
+			<!-- start banner Area -->
+			<section class="banner-area relative" id="home">
+				<div class="overlay overlay-bg"></div>
+				<div class="container">
+					<div class="row fullscreen d-flex align-items-center justify-content-center">
+						<div class="banner-content col-lg-7 col-md-6 ">
+							<h6 class="text-white ">the Royal Essence of Journey</h6>
+							<h1 class="text-white text-uppercase">
+								Relaxed Journey Ever
+							</h1>
+							<hr>
+							<a href="register.html" class="primary-btn text-uppercase">Join Us Now</a>
+						</div>
+						<div class="col-lg-5  col-md-6 header-right">
+							<h4 class="text-white pb-30">Book Your Car Today!</h4>
+							<!--   FORM START  -->
+							<form class="form" name="searchCar" method="get" action="results.php" id="carForm" onsubmit="return validateForm()">
+								<b>Pick-Up Location:</b>
+								<div class="form-group">
+									<div class="default-select" id="pickUpLocation">
+										<select name="pickUpLocation" form="carForm" >
+											<option value="" disabled selected hidden>Location</option>
+											<option value="Skopje Airport">Skopje International Airport</option>
+											<option value="Ohrid Airport">Ohrid St.Paul the Apostle Airport</option>
+										</select>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="form-check">
+										<input type="checkbox" name="differentLocationCheckBox" value="1" class="form-check-input" id="checkLocation" onclick="returnLocation()" >
+										<label class="form-check-label" for="exampleCheck1">Return car at different location</label>
+									</div>
+								</div>
+								<b id="dropoffLL" style="display: none;">Drop-Off Location:</b>
+								<div class="form-group" >
+									<div class="default-select" style="display: none;" id="dropOffLocation">
+										<select name="dropOffLocation" form="carForm">
+											<option value="" disabled selected hidden>Location</option>
+											<option value="Skopje Airport">Skopje International Airport</option>
+											<option value="Ohrid Airport">Ohrid St.Paul the Apostle Airport</option>
+										</select>
+									</div>
+								</div>
+ 								<b>Pick-Up Date and Time:</b>
+								<div class="form-group row">
+									<div class="col-md-6 wrap-left">
+										<div class="input-group dates-wrap">
+											<input id="datepicker" class="dates form-control" placeholder="Date" type="text" name="pickUpDate" required>
+											<!-- <input type="text" name="pickUpDate" placeholder="Date"  class="dates form-control "id="pickUpDate"> -->
+
+											<div class="input-group-prepend">
+												<span  class="input-group-text"><span class="lnr lnr-calendar-full"></span></span>
+											</div>
+										</div>
+									</div>
+
+									<div class="col-md-6 wrap-right">
+										<div class="default-select" id="default-select">
+											<select name="pickUpTime" placeholder="Time">
+												<option value="" disabled selected hidden>Time</option>
+												<option value="9">9-12 </option>
+												<option value="13">13-16 </option>
+												<option value="16">16-21 </option>
+												<option value="21">21- 5</option>
+												<option value="5">5-9</option>
+											</select>
+									</div>
+								</div>
+							</div>
+							<b>Drop-Off Date and Time:</b>
+
+							<div class="form-group row">
+								<div class="col-md-6 wrap-left">
+									<div class="input-group dates-wrap">
+										<input name="dropOffDate" id="datepicker2" class="dates form-control"  placeholder="Date" type="text" required>
+										<!-- <input type="text" name="dropOffDate" placeholder="Date"  class="dates form-control"> -->
+										<div class="input-group-prepend">
+											<span  class="input-group-text"><span class="lnr lnr-calendar-full"></span></span>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6 wrap-right">
+									<div class="default-select" id="time-select">
+										<select name="dropOffTime" placeholder="time">
+											<option value="" disabled selected hidden>Time</option>
+											<option value="9">9-12 </option>
+											<option value="13">13-16 </option>
+											<option value="16">16-21 </option>
+											<option value="21">21- 5</option>
+											<option value="5">5-9</option>
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="form-check">
+									<input type="checkbox" name="driverAge" value="20" class="form-check-input" id="exampleCheck1">
+									<label class="form-check-label" for="exampleCheck1">Driver between 20 - 65 ?</label>
+								</div>
+							</div>
+							<div class="form-group row">
+								<div class="col-md-12">
+									<input style="visibility: hidden;" type="text" name="dateDiff" value="">
+									<button type="submit" class="btn btn-default btn-lg btn-block text-center text-uppercase"> Search For Cars</button>
+								</div>
+							</div>
+							</form>
+							<!--   /FORM END  -->
+
+
+
+						</div>
+					</div>
+				</div>
+			</section>
+			<!-- End banner Area -->
+
+			<!-- Start fact Area -->
+			<section class="facts-area section-gap">
+				<div class="container">
+					<div class="row">
+						<div class="col single-fact">
+							<h1 class="counter">536</h1>
+							<p>Cars for rent</p>
+						</div>
+						<div class="col single-fact">
+							<h1 class="counter">16784</h1>
+							<p>Happy Clients</p>
+						</div>
+						<div class="col single-fact">
+							<h1 class="counter">18276</h1>
+							<p>Works Completed</p>
+						</div>
+                        <div class="col single-fact">
+                            <h1 class="counter">43550</h1>
+                            <p>Work Hours</p>
+                        </div>
+                        <div class="col single-fact">
+							<h1 class="counter">2239</h1>
+							<p>Cups of Coffee Taken</p>
+						</div>
+					</div>
+				</div>
+			</section>
+			<!-- end fact Area -->
+
+			<!-- start footer Area -->
+			<footer class="footer-area section-gap">
+				<div class="container">
+					<div class="row">
+						<div class="col-lg-2 col-md-6 col-sm-6">
+							<div class="single-footer-widget">
+								<h6>Quick links</h6>
+								<ul>
+									<li><a href="#">Jobs</a></li>
+									<li><a href="#">Brand Assets</a></li>
+									<li><a href="#">Investor Relations</a></li>
+									<li><a href="#">Terms of Service</a></li>
+								</ul>
+							</div>
+						</div>
+						<div class="col-lg-2 col-md-6 col-sm-6">
+							<div class="single-footer-widget">
+								<h6>Features</h6>
+								<ul>
+									<li><a href="#">Jobs</a></li>
+									<li><a href="#">Brand Assets</a></li>
+									<li><a href="#">Investor Relations</a></li>
+									<li><a href="#">Terms of Service</a></li>
+								</ul>
+							</div>
+						</div>
+						<div class="col-lg-2 col-md-6 col-sm-6">
+							<div class="single-footer-widget">
+								<h6>Resources</h6>
+								<ul>
+									<li><a href="#">Jobs</a></li>
+									<li><a href="#">Brand Assets</a></li>
+									<li><a href="#">Investor Relations</a></li>
+									<li><a href="#">Terms of Service</a></li>
+								</ul>
+							</div>
+						</div>
+						<div class="col-lg-2 col-md-6 col-sm-6 social-widget">
+							<div class="single-footer-widget">
+								<h6>Follow Us</h6>
+								<p>Let us be social</p>
+								<div class="footer-social d-flex align-items-center">
+									<a href="#"><i class="fa fa-facebook"></i></a>
+									<a href="#"><i class="fa fa-twitter"></i></a>
+									<a href="#"><i class="fa fa-dribbble"></i></a>
+									<a href="#"><i class="fa fa-behance"></i></a>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-4  col-md-6 col-sm-6">
+							<div class="single-footer-widget">
+								<h6>Newsletter</h6>
+								<p>Stay update with our latest</p>
+								<div class="" id="mc_embed_signup">
+									<form target="_blank" novalidate="true" action="https://spondonit.us12.list-manage.com/subscribe/post?u=1462626880ade1ac87bd9c93a&amp;id=92a4423d01" method="get" class="form-inline">
+										<input class="form-control" name="EMAIL" placeholder="Enter Email" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Email '" required="" type="email">
+			                            	<button class="click-btn btn btn-default"><span class="lnr lnr-arrow-right"></span></button>
+			                            	<div style="position: absolute; left: -5000px;">
+												<input name="b_36c4fd991d266f23781ded980_aefe40901a" tabindex="-1" value="" type="text">
+											</div>
+
+										<div class="info"></div>
+									</form>
+								</div>
+							</div>
+						</div>
+						<p class="mt-50 mx-auto footer-text col-lg-12">
+                            Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved.</a>
+						</p>
+					</div>
+				</div>
+			</footer>
+			<!-- End footer Area -->
+
+
+
+			<script src="js/vendor/jquery-2.2.4.min.js"></script>
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+			<script src="js/vendor/bootstrap.min.js"></script>
+			<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBhOdIF3Y9382fqJYt5I_sswSrEw5eihAA"></script>
+			<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  		<script src="js/easing.min.js"></script>
+			<script src="js/hoverIntent.js"></script>
+			<script src="js/superfish.min.js"></script>
+			<script src="js/jquery.ajaxchimp.min.js"></script>
+			<script src="js/jquery.magnific-popup.min.js"></script>
+			<script src="js/owl.carousel.min.js"></script>
+			<script src="js/jquery.sticky.js"></script>
+			<script src="js/jquery.nice-select.min.js"></script>
+			<script src="js/waypoints.min.js"></script>
+			<script src="js/jquery.counterup.min.js"></script>
+			<script src="js/parallax.min.js"></script>
+			<script src="js/mail-script.js"></script>
+			<script src="js/main.js"></script>
+		</body>
+	</html>
